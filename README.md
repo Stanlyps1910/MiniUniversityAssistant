@@ -1,5 +1,7 @@
 # 🎓 UniAssistant Lite
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/7c9370e5-1c5a-4033-b3fa-1e43b75a32a5/deploy-status)](https://app.netlify.com/projects/universityassistant/deploys)
+
 **UniAssistant Lite** is a modern, privacy-first, and fully offline university companion designed to help students manage their academic life with ease. Built with speed and aesthetics in mind, it provides a premium experience for tracking schedules, tasks, and attendance.
 
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
