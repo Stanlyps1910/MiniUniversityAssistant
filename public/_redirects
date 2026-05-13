@@ -1,0 +1,6 @@
+/*
+  Standard Netlify redirect for Single Page Applications.
+  Even though you aren't using React Router yet, this prevents 
+  404 errors if you ever add real URLs in the future.
+*/
+/*  /index.html  200
