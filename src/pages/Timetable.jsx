@@ -252,7 +252,7 @@ Now convert my timetable (attached) into this format. Output ONLY the formatted 
                     <span className={`text-[10px] font-semibold uppercase px-2 py-0.5 rounded ${absent ? 'text-red-500 bg-red-100' : present ? 'text-emerald-600 bg-emerald-100' : 'text-gray-400 bg-gray-100'}`}>
                       {absent ? 'Absent' : present ? 'Present' : 'Upcoming'}
                     </span>
-                    <button onClick={() => toggleDayAbsent(c.subject)} className={`shrink-0 p-1.5 rounded-lg transition-all ${absent ? 'bg-red-100 text-red-500 hover:bg-red-200' : present ? 'bg-emerald-100 text-emerald-500 hover:bg-emerald-200' : 'bg-gradient-to-r from-rose-100 to-pink-100 text-red-400 hover:from-red-100 hover:to-rose-100 hover:text-red-500'}`} title={absent ? 'Mark present' : 'Mark absent'}>
+                    <button onClick={() => toggleDayAbsent(c.subject)} className={`shrink-0 flex items-center justify-center p-1.5 rounded-lg transition-all ${absent ? 'bg-red-100 text-red-500 hover:bg-red-200' : present ? 'bg-emerald-100 text-emerald-500 hover:bg-emerald-200' : 'bg-gradient-to-r from-rose-100 to-pink-100 text-red-400 hover:from-red-100 hover:to-rose-100 hover:text-red-500'}`} title={absent ? 'Mark present' : 'Mark absent'}>
                       {absent ? <FiCheckCircle className="w-4 h-4" /> : <FiXCircle className="w-4 h-4" />}
                     </button>
                   </div>

@@ -227,7 +227,7 @@ export default function Dashboard() {
                       </p>
                       <span className={`inline-block mt-1.5 px-2 py-0.5 rounded text-[10px] font-semibold uppercase ${statusBadge.style}`}>{statusBadge.text}</span>
                     </div>
-                    <button onClick={() => toggleAbsent(c.subject)} className={`shrink-0 self-center p-2.5 rounded-xl transition-all ${absent ? 'bg-red-100 text-red-500 hover:bg-red-200' : (isPresent ? 'bg-emerald-100 text-emerald-500 hover:bg-emerald-200' : 'bg-gradient-to-r from-rose-100 to-pink-100 text-red-400 hover:from-red-100 hover:to-rose-100 hover:text-red-500')}`} title={absent ? 'Mark present' : 'Mark absent'}>
+                    <button onClick={() => toggleAbsent(c.subject)} className={`shrink-0 self-center flex items-center justify-center p-2.5 rounded-xl transition-all ${absent ? 'bg-red-100 text-red-500 hover:bg-red-200' : (isPresent ? 'bg-emerald-100 text-emerald-500 hover:bg-emerald-200' : 'bg-gradient-to-r from-rose-100 to-pink-100 text-red-400 hover:from-red-100 hover:to-rose-100 hover:text-red-500')}`} title={absent ? 'Mark present' : 'Mark absent'}>
                       {absent ? <FiCheckCircle className="w-5 h-5" /> : <FiXCircle className="w-5 h-5" />}
                     </button>
                   </div>
