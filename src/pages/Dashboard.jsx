@@ -57,13 +57,15 @@ export default function Dashboard() {
   // Use useState initializer so data is fresh on every mount (page switch)
   const [timetable] = useState(() => storage.getTimetable())
   const [assignments] = useState(() => storage.getAssignments())
+  const [tempClasses] = useState(() => storage.getTempClasses())
 
   const todayName = days[new Date().getDay()]
 
-  const todayClasses = useMemo(
-    () => timetable.filter((c) => c.day === todayName),
-    [timetable, todayName]
-  )
+  const todayClasses = useMemo(() => {
+    const regular = timetable.filter((c) => c.day === todayName)
+    const temp = tempClasses.filter((t) => t.date === todayDate)
+    return [...regular, ...temp].sort((a, b) => a.start_time.localeCompare(b.start_time))
+  }, [timetable, tempClasses, todayName, todayDate])
 
   const pendingCount = useMemo(
     () => assignments.filter((a) => !a.is_completed).length,

@@ -5,6 +5,13 @@ import toast from 'react-hot-toast'
 import { storage } from '../utils/storage'
 import { calculateAttendance, getRiskLevel } from '../utils/attendance'
 
+const getLocalDateStr = (d = new Date()) => {
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${y}-${m}-${day}`
+}
+
 export default function Attendance() {
   const [totalOverride, setTotalOverride] = useState('')
   const [attended, setAttended] = useState('')
@@ -12,6 +19,7 @@ export default function Attendance() {
   const [selectedSubject, setSelectedSubject] = useState('')
 
   const timetable = storage.getTimetable()
+  const tempClasses = storage.getTempClasses()
   const semester = storage.getSemester()
 
   const subjects = useMemo(
@@ -19,7 +27,6 @@ export default function Attendance() {
     [timetable]
   )
 
-  const isWeekday = (dayName) => dayName !== 'Sunday'
 
   const autoTotal = useMemo(() => {
     if (!semester.start_date) return 0
@@ -27,25 +34,24 @@ export default function Attendance() {
     const now = new Date()
     if (now <= start) return 0
 
-    if (!selectedSubject) {
-      const weeksElapsed = Math.max(1, Math.ceil((now - start) / (1000 * 60 * 60 * 24 * 7)))
-      const nonSundayEntries = timetable.filter((e) => e.day !== 'Sunday').length
-      return weeksElapsed * nonSundayEntries
-    }
-
-    const subjectDays = new Set(
-      timetable.filter((e) => e.subject === selectedSubject && e.day !== 'Sunday').map((e) => e.day)
-    )
-    if (subjectDays.size === 0) return 0
     let count = 0
     const d = new Date(start)
     while (d <= now) {
       const dayName = d.toLocaleDateString('en-US', { weekday: 'long' })
-      if (isWeekday(dayName) && subjectDays.has(dayName)) count++
+      const dateStr = getLocalDateStr(d)
+
+      if (dayName !== 'Sunday') {
+        const regularCount = timetable.filter((e) => e.day === dayName && (!selectedSubject || e.subject === selectedSubject)).length
+        count += regularCount
+      }
+
+      const tempCount = tempClasses.filter((t) => t.date === dateStr && (!selectedSubject || t.subject === selectedSubject)).length
+      count += tempCount
+
       d.setDate(d.getDate() + 1)
     }
     return count
-  }, [timetable, semester, selectedSubject])
+  }, [timetable, tempClasses, semester, selectedSubject])
 
   const totalClasses = totalOverride === '' ? autoTotal : Number(totalOverride)
 
@@ -67,26 +73,25 @@ export default function Attendance() {
     const now = new Date()
     if (end <= now) return 0
 
-    if (!selectedSubject) {
-      const nonSundayEntries = timetable.filter((e) => e.day !== 'Sunday').length
-      const daysLeft = Math.ceil((end - now) / (1000 * 60 * 60 * 24))
-      const weeksLeft = Math.ceil(daysLeft / 7)
-      return weeksLeft * Math.max(nonSundayEntries, 1)
-    }
-
-    const subjectDays = new Set(
-      timetable.filter((e) => e.subject === selectedSubject && e.day !== 'Sunday').map((e) => e.day)
-    )
-    if (subjectDays.size === 0) return 0
     let count = 0
     const d = new Date(now)
+    d.setDate(d.getDate() + 1) // Start from tomorrow
     while (d <= end) {
       const dayName = d.toLocaleDateString('en-US', { weekday: 'long' })
-      if (isWeekday(dayName) && subjectDays.has(dayName)) count++
+      const dateStr = getLocalDateStr(d)
+
+      if (dayName !== 'Sunday') {
+        const regularCount = timetable.filter((e) => e.day === dayName && (!selectedSubject || e.subject === selectedSubject)).length
+        count += regularCount
+      }
+
+      const tempCount = tempClasses.filter((t) => t.date === dateStr && (!selectedSubject || t.subject === selectedSubject)).length
+      count += tempCount
+
       d.setDate(d.getDate() + 1)
     }
     return count
-  }, [timetable, semester, selectedSubject])
+  }, [timetable, tempClasses, semester, selectedSubject])
 
   const remaining = remainingOverride ? parseInt(remainingOverride) || 0 : autoRemaining
 
