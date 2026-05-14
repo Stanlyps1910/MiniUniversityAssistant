@@ -60,6 +60,8 @@ export default function Dashboard() {
   const [tempClasses] = useState(() => storage.getTempClasses())
 
   const todayName = days[new Date().getDay()]
+  const [now, setNow] = useState(new Date())
+  const todayDate = getLocalDateStr(now)
 
   const todayClasses = useMemo(() => {
     const regular = timetable.filter((c) => c.day === todayName)
@@ -78,8 +80,6 @@ export default function Dashboard() {
   )
 
   const [attendance, setAttendance] = useState(storage.getAttendance)
-  const [now, setNow] = useState(new Date())
-  const todayDate = getLocalDateStr(now)
 
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 30000)
